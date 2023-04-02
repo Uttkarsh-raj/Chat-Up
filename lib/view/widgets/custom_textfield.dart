@@ -7,11 +7,13 @@ class CustomTextField extends StatefulWidget {
       required this.label,
       required this.icon,
       required this.obscure,
-      this.suffixIcon});
+      this.suffixIcon,
+      required this.controller});
   final String label;
   final IconData icon;
   bool obscure;
   IconData? suffixIcon;
+  final TextEditingController controller;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -35,6 +37,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(25, 8, 8, 8),
         child: TextField(
+          controller: widget.controller,
           obscureText: widget.obscure,
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -50,10 +53,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 setState(() {
                   if (widget.suffixIcon != Icons.visibility_off_outlined) {
                     widget.suffixIcon = Icons.visibility_off_outlined;
-                    widget.obscure = false;
+                    widget.obscure = true;
                   } else {
                     widget.suffixIcon = Icons.visibility_outlined;
-                    widget.obscure = true;
+                    widget.obscure = false;
                   }
                 });
               },

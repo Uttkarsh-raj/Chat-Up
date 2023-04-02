@@ -1,27 +1,27 @@
-import 'package:chatit/constants/app_colors.dart';
-import 'package:chatit/constants/assets_constants.dart';
-import 'package:chatit/view/screens/signup_page.dart';
-import 'package:chatit/view/widgets/custom_button.dart';
-import 'package:chatit/view/widgets/custom_textfield.dart';
+import 'package:chatit/controllers/auth_controller.dart';
+import 'package:chatit/view/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../controllers/auth_controller.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/assets_constants.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_textfield.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends ConsumerStatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  ConsumerState<LoginPage> createState() => _LoginPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  void onLogin() {
-    final res = ref.read(authControllerProvider.notifier).logIn(
+  void onSignup() {
+    final res = ref.read(authControllerProvider.notifier).signUp(
           email: emailController.text,
           password: passwordController.text,
           context: context,
@@ -57,7 +57,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       height: 24,
                     ),
                     const Text(
-                      'Login to your Account',
+                      'We are happy to have you.',
                       style: TextStyle(
                         fontSize: 17,
                       ),
@@ -84,27 +84,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(
                       height: 18,
                     ),
-                    const Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 18,
-                    ),
                     GestureDetector(
-                      onTap: onLogin,
+                      onTap: onSignup,
                       child: const CustomButtonGreen(
-                        title: 'Login',
+                        title: 'Sign Up',
                       ),
                     ),
                     const SizedBox(
                       height: 15,
                     ),
                     const Text(
-                      'or continue with',
+                      'or sign up with',
                       style: TextStyle(
                         fontSize: 17,
                       ),
@@ -124,7 +114,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            'Don\'t have an account? ',
+                            'Already have an account? ',
                             style: TextStyle(
                               fontSize: 17,
                             ),
@@ -134,7 +124,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               Navigator.push(
                                 context,
                                 PageTransition(
-                                  child: const SignupPage(),
+                                  child: const LoginPage(),
                                   type: PageTransitionType.fade,
                                   duration: const Duration(milliseconds: 100),
                                   alignment: Alignment.center,
@@ -142,7 +132,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               );
                             },
                             child: Text(
-                              'Sign Up',
+                              'Login',
                               style: TextStyle(
                                 fontSize: 19,
                                 fontWeight: FontWeight.w600,
