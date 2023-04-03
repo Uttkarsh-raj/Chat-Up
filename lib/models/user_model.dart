@@ -8,37 +8,37 @@ class UserModel {
   final String name;
   final String email;
   final List<String> contacts;
-  final String profiePic;
   final String bannerPic;
   final String uid;
   final String bio;
+  final String profilePic;
   const UserModel({
     required this.name,
     required this.email,
     required this.contacts,
-    required this.profiePic,
     required this.bannerPic,
     required this.uid,
     required this.bio,
+    required this.profilePic,
   });
 
   UserModel copyWith({
     String? name,
     String? email,
     List<String>? contacts,
-    String? profiePic,
     String? bannerPic,
     String? uid,
     String? bio,
+    String? profilePic,
   }) {
     return UserModel(
       name: name ?? this.name,
       email: email ?? this.email,
       contacts: contacts ?? this.contacts,
-      profiePic: profiePic ?? this.profiePic,
       bannerPic: bannerPic ?? this.bannerPic,
       uid: uid ?? this.uid,
       bio: bio ?? this.bio,
+      profilePic: profilePic ?? this.profilePic,
     );
   }
 
@@ -47,9 +47,9 @@ class UserModel {
       'name': name,
       'email': email,
       'contacts': contacts,
-      'profiePic': profiePic,
-      'bannerPic': bannerPic,
+      'bannerpic': bannerPic,
       'bio': bio,
+      'profilepic': profilePic,
     };
   }
 
@@ -60,16 +60,16 @@ class UserModel {
       contacts: List<String>.from(
         (map['contacts'] as List<String>),
       ),
-      profiePic: map['profiePic'] as String,
-      bannerPic: map['bannerPic'] as String,
+      bannerPic: map['bannerpic'] as String,
       uid: map['\$id'] as String,
       bio: map['bio'] as String,
+      profilePic: map['profilepic'] as String,
     );
   }
 
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, contacts: $contacts, profiePic: $profiePic, bannerPic: $bannerPic, uid: $uid, bio: $bio)';
+    return 'UserModel(name: $name, email: $email, contacts: $contacts, bannerpic: $bannerPic, uid: $uid, bio: $bio ,profilepic: $profilePic )';
   }
 
   @override
@@ -79,10 +79,10 @@ class UserModel {
     return other.name == name &&
         other.email == email &&
         listEquals(other.contacts, contacts) &&
-        other.profiePic == profiePic &&
         other.bannerPic == bannerPic &&
         other.uid == uid &&
-        other.bio == bio;
+        other.bio == bio &&
+        other.profilePic == profilePic;
   }
 
   @override
@@ -90,9 +90,9 @@ class UserModel {
     return name.hashCode ^
         email.hashCode ^
         contacts.hashCode ^
-        profiePic.hashCode ^
         bannerPic.hashCode ^
         uid.hashCode ^
-        bio.hashCode;
+        bio.hashCode ^
+        profilePic.hashCode;
   }
 }

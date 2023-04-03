@@ -49,10 +49,10 @@ class AuthController extends StateNotifier<bool> {
           name: getNameFromEmail(email),
           email: email,
           contacts: const [],
-          profiePic: '',
-          bannerPic: '',
+          bannerPic: "",
           uid: '',
           bio: '',
+          profilePic: '',
         );
         final result = await _userAPi.saveUserData(userModel);
         result.fold(
