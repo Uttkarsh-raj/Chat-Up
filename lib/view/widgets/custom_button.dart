@@ -1,5 +1,4 @@
 import 'package:chatit/constants/app_colors.dart';
-import 'package:chatit/constants/assets_constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomButtonGreen extends StatelessWidget {

@@ -8,12 +8,14 @@ class CustomTextField extends StatefulWidget {
       required this.icon,
       required this.obscure,
       this.suffixIcon,
-      required this.controller});
+      required this.controller,
+      this.onSubmmit});
   final String label;
   final IconData icon;
   bool obscure;
   IconData? suffixIcon;
   final TextEditingController controller;
+  Function(String)? onSubmmit;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -27,7 +29,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       height: size.height * 0.075,
       width: size.width * 0.93,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(33, 33, 33, 1),
+        color: const Color.fromRGBO(33, 33, 33, 1),
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
           width: 1.2,
@@ -37,6 +39,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(25, 8, 8, 8),
         child: TextField(
+          onSubmitted: widget.onSubmmit,
           controller: widget.controller,
           obscureText: widget.obscure,
           decoration: InputDecoration(

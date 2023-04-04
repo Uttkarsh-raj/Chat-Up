@@ -1,4 +1,3 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
 import 'package:chatit/models/apis/auth_api.dart';
 import 'package:chatit/models/apis/user_api.dart';
@@ -50,7 +49,7 @@ class AuthController extends StateNotifier<bool> {
           email: email,
           contacts: const [],
           bannerPic: "",
-          uid: '',
+          uid: r.$id,
           bio: '',
           profilePic: '',
         );

@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -58,7 +56,7 @@ class UserModel {
       name: map['name'] as String,
       email: map['email'] as String,
       contacts: List<String>.from(
-        (map['contacts'] as List<String>),
+        (map['contacts']),
       ),
       bannerPic: map['bannerpic'] as String,
       uid: map['\$id'] as String,

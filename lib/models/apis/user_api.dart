@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as model;
 import 'package:chatit/constants/appwrite_constants.dart';
 import 'package:chatit/models/provider/providers.dart';
 import 'package:chatit/models/user_model.dart';
@@ -7,6 +8,7 @@ import 'package:fpdart/fpdart.dart';
 
 abstract class IUserApi {
   Future<Either<String, void>> saveUserData(UserModel userModel);
+  Future<List<model.Document>> searchUserByName(String name);
 }
 
 final userApiProvider = Provider((ref) {
@@ -23,8 +25,8 @@ class UserApi implements IUserApi {
     try {
       await _db.createDocument(
         databaseId: AppWriteConstants.databaseId,
-        collectionId: AppWriteConstants.collectionId,
-        documentId: ID.unique(),
+        collectionId: AppWriteConstants.userCollectionId,
+        documentId: userModel.uid,
         data: userModel.toMap(),
       );
       return right(null);
@@ -33,5 +35,17 @@ class UserApi implements IUserApi {
     } catch (e) {
       return left(e.toString());
     }
+  }
+
+  @override
+  Future<List<model.Document>> searchUserByName(String name) async {
+    final documents = await _db.listDocuments(
+      databaseId: AppWriteConstants.databaseId,
+      collectionId: AppWriteConstants.userCollectionId,
+      queries: [
+        Query.search('name', name),
+      ],
+    );
+    return documents.documents;
   }
 }

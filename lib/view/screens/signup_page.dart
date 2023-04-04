@@ -2,7 +2,6 @@ import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/view/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../constants/app_colors.dart';
@@ -26,6 +25,13 @@ class _SignupPageState extends ConsumerState<SignupPage> {
           password: passwordController.text,
           context: context,
         );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
