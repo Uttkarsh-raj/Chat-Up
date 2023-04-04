@@ -65,12 +65,14 @@ class _HomePageState extends ConsumerState<HomePage> {
               obscure: false,
               controller: searchController,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             isShowUsers
                 ? ref.watch(searchUserProvider(searchController.text)).when(
                       data: (users) {
                         return Expanded(
                           child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
                             itemCount: users.length,
                             itemBuilder: (context, index) {
                               final user = users[index];
