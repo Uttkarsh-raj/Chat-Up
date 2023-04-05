@@ -1,5 +1,6 @@
 import 'package:chatit/constants/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:glassmorphism/glassmorphism.dart';
 
 class CustomButtonGreen extends StatelessWidget {
   const CustomButtonGreen({super.key, required this.title});
@@ -63,6 +64,46 @@ class CustomButtonGrey extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  const CustomButton(
+      {super.key, required this.height, required this.width, this.child});
+  final double height;
+  final double width;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassmorphicContainer(
+      width: width,
+      height: height,
+      borderRadius: 15,
+      blur: 20,
+      alignment: Alignment.bottomCenter,
+      border: 2,
+      linearGradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            const Color(0xFFffffff).withOpacity(0.1),
+            const Color(0xFFFFFFFF).withOpacity(0.07),
+          ],
+          stops: const [
+            0.1,
+            1,
+          ]),
+      borderGradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color(0xFFffffff).withOpacity(0),
+          const Color((0xFFFFFFFF)).withOpacity(0),
+        ],
+      ),
+      child: Center(child: child),
     );
   }
 }
