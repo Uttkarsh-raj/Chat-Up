@@ -17,6 +17,28 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   TextEditingController searchController = TextEditingController();
   bool isShowUsers = false;
+  PopupMenuItem _buildPopupMenuItem(String title, IconData icon) {
+    return PopupMenuItem(
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 25,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -32,24 +54,27 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(5, 20, 10, 0),
+              padding: const EdgeInsets.fromLTRB(5, 20, 0, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  CircleAvatar(
+                children: [
+                  const CircleAvatar(
                     backgroundImage: Assets.logo,
                     radius: 30,
                   ),
-                  Text(
+                  const Text(
                     'Chat-Up',
                     style: TextStyle(
                       fontSize: 27,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Icon(
-                    Icons.menu,
-                    size: 26,
+                  PopupMenuButton(
+                    iconSize: 28,
+                    itemBuilder: (ctx) => [
+                      _buildPopupMenuItem('Profile', Icons.person_2_outlined),
+                      _buildPopupMenuItem('Log-Out', Icons.logout_outlined),
+                    ],
                   ),
                 ],
               ),
