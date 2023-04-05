@@ -15,6 +15,18 @@ class ChatsPage extends StatefulWidget {
 class _ChatsPageState extends State<ChatsPage> {
   final TextEditingController messageController = TextEditingController();
 
+  PopupMenuItem _buildPopupMenuItem(String title, IconData icon) {
+    return PopupMenuItem(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(icon),
+          Text(title),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
     messageController.dispose();
@@ -29,7 +41,7 @@ class _ChatsPageState extends State<ChatsPage> {
         toolbarHeight: size.height * 0.1,
         backgroundColor: const Color.fromARGB(250, 49, 47, 47),
         leading: Padding(
-          padding: const EdgeInsets.fromLTRB(7, 18, 7, 18),
+          padding: const EdgeInsets.fromLTRB(6, 18, 6, 18),
           child: GestureDetector(
             onTap: () {
               Navigator.of(context).pop();
@@ -39,13 +51,14 @@ class _ChatsPageState extends State<ChatsPage> {
               width: size.width * 0.2,
               child: const Icon(
                 Icons.keyboard_arrow_left_outlined,
-                size: 30,
+                size: 25,
               ),
             ),
           ),
         ),
         centerTitle: true,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
               backgroundImage: NetworkImage(
@@ -82,13 +95,15 @@ class _ChatsPageState extends State<ChatsPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(7, 18, 7, 18),
+            padding: const EdgeInsets.fromLTRB(6, 18, 6, 18),
             child: CustomButton(
               height: size.height * 0.06,
               width: size.width * 0.12,
-              child: const Icon(
-                Icons.more_vert_outlined,
-                size: 30,
+              child: PopupMenuButton(
+                itemBuilder: (ctx) => [
+                  _buildPopupMenuItem('Search', Icons.search_outlined),
+                  _buildPopupMenuItem('Report', Icons.report_outlined),
+                ],
               ),
             ),
           ),
