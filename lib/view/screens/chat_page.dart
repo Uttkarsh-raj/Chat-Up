@@ -1,18 +1,21 @@
 import 'package:chatit/constants/app_colors.dart';
+import 'package:chatit/controllers/auth_controller.dart';
+import 'package:chatit/controllers/user_profile_controller.dart';
 import 'package:chatit/view/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/user_model.dart';
 
-class ChatsPage extends StatefulWidget {
+class ChatsPage extends ConsumerStatefulWidget {
   const ChatsPage({super.key, required this.receiver});
   final UserModel receiver;
 
   @override
-  State<ChatsPage> createState() => _ChatsPageState();
+  ConsumerState<ChatsPage> createState() => _ChatsPageState();
 }
 
-class _ChatsPageState extends State<ChatsPage> {
+class _ChatsPageState extends ConsumerState<ChatsPage> {
   final TextEditingController messageController = TextEditingController();
 
   PopupMenuItem _buildPopupMenuItem(String title, IconData icon) {
@@ -35,6 +38,8 @@ class _ChatsPageState extends State<ChatsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.watch(currentUserDetailsProvider).value;
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -145,8 +150,28 @@ class _ChatsPageState extends State<ChatsPage> {
                           hintStyle: const TextStyle(
                             fontSize: 18,
                           ),
-                          suffixIcon: const Icon(
-                            Icons.send_outlined,
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              if (messageController.text.isNotEmpty) {
+                                print(messageController.text);
+                                // if (currentUser != null) {
+                                print(messageController.text);
+                                ref
+                                    .read(
+                                        userProfileControllerProvider.notifier)
+                                    .addToMessages(
+                                      user: widget.receiver,
+                                      context: context,
+                                      currentUser: currentUser!,
+                                    );
+                                // }
+                              } else {
+                                print('null');
+                              }
+                            },
+                            child: const Icon(
+                              Icons.send_outlined,
+                            ),
                           ),
                           suffixIconColor: AppColors.grey,
                         ),

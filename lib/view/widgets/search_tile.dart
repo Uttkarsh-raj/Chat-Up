@@ -6,10 +6,12 @@ import 'package:page_transition/page_transition.dart';
 import '../../models/user_model.dart';
 
 class SearchTile extends StatelessWidget {
-  final UserModel userModel;
+  final UserModel receiver;
+  // final UserModel sender;
   const SearchTile({
     super.key,
-    required this.userModel,
+    required this.receiver,
+    // required this.sender,
   });
 
   @override
@@ -25,7 +27,7 @@ class SearchTile extends StatelessWidget {
           context,
           PageTransition(
             child: ChatsPage(
-              receiver: userModel,
+              receiver: receiver,
             ),
             type: PageTransitionType.fade,
           ),
@@ -33,13 +35,12 @@ class SearchTile extends StatelessWidget {
       },
       leading: CircleAvatar(
         backgroundImage: NetworkImage(
-          userModel.profilePic ??
-              'https://upload.wikimedia.org/wikipedia/en/9/98/SaitamaWikipediapage.png',
+          receiver.profilePic,
         ),
         radius: 30,
       ),
       title: Text(
-        userModel.name,
+        receiver.name,
         style: TextStyle(
           color: AppColors.mainText,
           fontSize: 18,
@@ -49,7 +50,7 @@ class SearchTile extends StatelessWidget {
       subtitle: Padding(
         padding: const EdgeInsets.fromLTRB(0, 3, 0, 8),
         child: Text(
-          '@${userModel.name}',
+          '@${receiver.name}',
           style: TextStyle(
             color: AppColors.subText,
             fontSize: 16,

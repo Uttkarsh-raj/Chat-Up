@@ -1,11 +1,9 @@
+import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/explore_controller.dart';
 import 'package:chatit/view/widgets/custom_textfield.dart';
 import 'package:chatit/view/widgets/search_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../constants/app_colors.dart';
-import '../../constants/assets_constants.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -48,6 +46,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.watch(currentUserDetailsProvider).value;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -58,10 +57,12 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CircleAvatar(
-                    backgroundImage: Assets.logo,
-                    radius: 30,
-                  ),
+                  (currentUser == null)
+                      ? const CircularProgressIndicator()
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(currentUser.profilePic),
+                          radius: 30,
+                        ),
                   const Text(
                     'Chat-Up',
                     style: TextStyle(
@@ -102,7 +103,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             itemCount: users.length,
                             itemBuilder: (context, index) {
                               final user = users[index];
-                              return SearchTile(userModel: user);
+                              return SearchTile(receiver: user);
                             },
                           ),
                         );

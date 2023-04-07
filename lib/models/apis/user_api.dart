@@ -9,6 +9,8 @@ import 'package:fpdart/fpdart.dart';
 abstract class IUserApi {
   Future<Either<String, void>> saveUserData(UserModel userModel);
   Future<List<model.Document>> searchUserByName(String name);
+  Future<model.Document> getUserData(String uid);
+  Future<Either<String, void>> addToContacts(UserModel user);
 }
 
 final userApiProvider = Provider((ref) {
@@ -47,5 +49,33 @@ class UserApi implements IUserApi {
       ],
     );
     return documents.documents;
+  }
+
+  @override
+  Future<Either<String, void>> addToContacts(UserModel user) async {
+    try {
+      await _db.createDocument(
+        databaseId: AppWriteConstants.databaseId,
+        collectionId: AppWriteConstants.userCollectionId,
+        documentId: user.uid,
+        data: {
+          'contacts': user.contacts,
+        },
+      );
+      return right(null);
+    } on AppwriteException catch (e) {
+      return left(e.message ?? 'Some unexpected error occured');
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
+  @override
+  Future<model.Document> getUserData(String uid) async {
+    return _db.getDocument(
+      databaseId: AppWriteConstants.databaseId,
+      collectionId: AppWriteConstants.userCollectionId,
+      documentId: uid,
+    );
   }
 }
