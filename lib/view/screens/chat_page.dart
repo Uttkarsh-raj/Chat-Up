@@ -153,20 +153,16 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
                           suffixIcon: GestureDetector(
                             onTap: () {
                               if (messageController.text.isNotEmpty) {
-                                print(messageController.text);
-                                // if (currentUser != null) {
-                                print(messageController.text);
-                                ref
-                                    .read(
-                                        userProfileControllerProvider.notifier)
-                                    .addToMessages(
-                                      user: widget.receiver,
-                                      context: context,
-                                      currentUser: currentUser!,
-                                    );
-                                // }
-                              } else {
-                                print('null');
+                                if (currentUser != null) {
+                                  ref
+                                      .read(userProfileControllerProvider
+                                          .notifier)
+                                      .addToMessages(
+                                        user: widget.receiver,
+                                        context: context,
+                                        currentUser: currentUser,
+                                      );
+                                }
                               }
                             },
                             child: const Icon(

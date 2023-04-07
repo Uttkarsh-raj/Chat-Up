@@ -20,15 +20,12 @@ final authControllerProvider =
 
 final currentUserDetailsProvider = FutureProvider((ref) {
   final currentUserId = ref.watch(currentUserProvider).value!.$id;
-  print("uid: " + currentUserId);
   final userDetails = ref.watch(userDetailsProvider(currentUserId));
-  print('name: ' + '${userDetails.value?.name.toString()}');
   return userDetails.value;
 });
 
 final userDetailsProvider = FutureProvider.family((ref, String uid) {
   final authController = ref.watch(authControllerProvider.notifier);
-  print("authcontroller: " + authController.getUserData(uid).toString());
   return authController.getUserData(uid);
 });
 
@@ -113,121 +110,7 @@ class AuthController extends StateNotifier<bool> {
 
   Future<UserModel> getUserData(String uid) async {
     final document = await _userAPi.getUserData(uid);
-    print(document);
     final updatedUser = UserModel.fromMap(document.data);
-    // print('docs' + document.data);
-    // print("updated user:" + updatedUser.uid);
     return updatedUser;
   }
 }
-
-// final authControllerProvider =
-//     StateNotifierProvider<AuthController, bool>((ref) {
-//   return AuthController(
-//     authAPI: ref.watch(authApiProvider),
-//     userAPI: ref.watch(userApiProvider),
-//   );
-// });
-
-// final currentUserDetailsProvider = FutureProvider((ref) {
-//   final currentUserId = ref.watch(currentUserAccountProvider).value!.$id;
-//   final userDetails = ref.watch(userDetailsProvider(currentUserId));
-//   return userDetails.value;
-// });
-
-// final userDetailsProvider = FutureProvider.family((ref, String uid) {
-//   final authController = ref.watch(authControllerProvider.notifier);
-//   return authController.getUserData(uid);
-// });
-
-// final currentUserAccountProvider = FutureProvider((ref) {
-//   final authController = ref.watch(authControllerProvider.notifier);
-//   return authController.currentUser();
-// });
-
-// class AuthController extends StateNotifier<bool> {
-//   final AuthApi _authAPI;
-//   final UserApi _userAPI;
-//   AuthController({
-//     required AuthApi authAPI,
-//     required UserApi userAPI,
-//   })  : _authAPI = authAPI,
-//         _userAPI = userAPI,
-//         super(false);
-//   // state = isLoading
-
-//   Future<model.Account?> currentUser() => _authAPI.currentUserAccount();
-
-//   void signUp({
-//     required String email,
-//     required String password,
-//     required BuildContext context,
-//   }) async {
-//     state = true;
-//     final res = await _authAPI.signup(
-//       email: email,
-//       password: password,
-//     );
-//     state = false;
-//     res.fold(
-//       (l) => showSnackbar(context, l.toString()),
-//       (r) async {
-//         UserModel userModel = UserModel(
-//           name: getNameFromEmail(email),
-//           email: email,
-//           contacts: const [],
-//           bannerPic: "",
-//           uid: r.$id,
-//           bio: '',
-//           profilePic: '',
-//         );
-//         final res2 = await _userAPI.saveUserData(userModel);
-//         res2.fold((l) => showSnackbar(context, l.toString()), (r) {
-//           showSnackbar(context, 'Accounted created! Please login.');
-//           Navigator.push(
-//             context,
-//             PageTransition(
-//               child: const LoginPage(),
-//               type: PageTransitionType.fade,
-//               duration: const Duration(milliseconds: 100),
-//               alignment: Alignment.center,
-//             ),
-//           );
-//         });
-//       },
-//     );
-//   }
-
-//   void login({
-//     required String email,
-//     required String password,
-//     required BuildContext context,
-//   }) async {
-//     state = true;
-//     final res = await _authAPI.login(
-//       email: email,
-//       password: password,
-//     );
-//     state = false;
-//     res.fold(
-//       (l) => showSnackbar(context, l.toString()),
-//       (r) {
-//         Navigator.push(
-//           context,
-//           PageTransition(
-//             child: const HomePage(),
-//             type: PageTransitionType.fade,
-//             duration: const Duration(milliseconds: 100),
-//             alignment: Alignment.center,
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   Future<UserModel> getUserData(String uid) async {
-//     final document = await _userAPI.getUserData(uid);
-//     final updatedUser = UserModel.fromMap(document.data);
-//     return updatedUser;
-//   }
-// }

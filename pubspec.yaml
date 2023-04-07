@@ -41,6 +41,7 @@ dependencies:
   fpdart: ^0.5.0
   flutter_riverpod: ^2.3.2
   glassmorphism: ^3.0.0
+  fancy_shimmer_image: ^2.0.2
 
 dev_dependencies:
   flutter_test:

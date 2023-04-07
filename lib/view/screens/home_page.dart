@@ -1,9 +1,12 @@
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/explore_controller.dart';
+import 'package:chatit/view/screens/profile_page.dart';
 import 'package:chatit/view/widgets/custom_textfield.dart';
 import 'package:chatit/view/widgets/search_tile.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -57,12 +60,22 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  (currentUser == null)
-                      ? const CircularProgressIndicator()
-                      : CircleAvatar(
-                          backgroundImage: NetworkImage(currentUser.profilePic),
-                          radius: 30,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          child: const ProfilePage(),
+                          type: PageTransitionType.fade,
                         ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('${currentUser?.profilePic}'),
+                      radius: 30,
+                    ),
+                  ),
                   const Text(
                     'Chat-Up',
                     style: TextStyle(

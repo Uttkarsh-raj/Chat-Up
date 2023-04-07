@@ -21,22 +21,24 @@ class UserProfileController extends StateNotifier<bool> {
   void addToMessages({
     required UserModel user,
     required BuildContext context,
-    required UserModel currentUser,
+    required UserModel? currentUser,
   }) async {
-    if (!currentUser.contacts.contains(user.uid)) {
-      user.contacts.add(currentUser.uid);
-      currentUser.contacts.add(user.uid);
+    if (currentUser != null) {
+      if (!currentUser.contacts.contains(user.uid)) {
+        user.contacts.add(currentUser.uid);
+        currentUser.contacts.add(user.uid);
+      }
+      final res = await _userApi.addToContacts(currentUser);
+      res.fold(
+        (l) => showSnackbar(context, l.toString()),
+        (r) async {
+          final res2 = await _userApi.addToContacts(user);
+          res2.fold(
+            (l) => showSnackbar(context, l.toString()),
+            (r) => null,
+          );
+        },
+      );
     }
-    final res = await _userApi.addToContacts(currentUser);
-    res.fold(
-      (l) => showSnackbar(context, l.toString()),
-      (r) async {
-        final res2 = await _userApi.addToContacts(user);
-        res2.fold(
-          (l) => showSnackbar(context, l.toString()),
-          (r) => null,
-        );
-      },
-    );
   }
 }
