@@ -5,13 +5,13 @@ class CustomTextField extends StatefulWidget {
   CustomTextField(
       {super.key,
       required this.label,
-      required this.icon,
+      this.icon,
       required this.obscure,
       this.suffixIcon,
       required this.controller,
       this.onSubmmit});
   final String label;
-  final IconData icon;
+  final IconData? icon;
   bool obscure;
   IconData? suffixIcon;
   final TextEditingController controller;

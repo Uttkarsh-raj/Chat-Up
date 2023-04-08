@@ -1,25 +1,38 @@
-import 'package:chatit/constants/app_colors.dart';
-import 'package:chatit/controllers/auth_controller.dart';
-import 'package:chatit/view/screens/edit_profile.dart';
-import 'package:chatit/view/widgets/custom_button.dart';
-import 'package:chatit/view/widgets/info_widget.dart';
+import 'package:chatit/view/screens/profile_page.dart';
+import 'package:chatit/view/widgets/custom_textfield.dart';
+import 'package:chatit/view/widgets/edit_field_widget.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
-class ProfilePage extends ConsumerStatefulWidget {
-  const ProfilePage({super.key});
+import '../../constants/app_colors.dart';
+import '../../controllers/auth_controller.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/info_widget.dart';
+
+class EditProfile extends ConsumerStatefulWidget {
+  const EditProfile({super.key});
 
   @override
-  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<EditProfile> createState() => _EditProfileState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage> {
+class _EditProfileState extends ConsumerState<EditProfile> {
+  TextEditingController bioController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    bioController.dispose();
+    nameController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final user = ref.watch(currentUserDetailsProvider).value;
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -62,62 +75,36 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 3,
+                    height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: InfoTab(
-                      title: 'Email',
-                      value: '${user?.email}',
+                    padding: const EdgeInsets.all(8.0),
+                    child: EditFields(
+                      controller: nameController,
+                      title: (user?.name == null) ? 'name' : '${user?.name}',
+                      maxlines: 1,
+                      height: size.height * 0.07,
                     ),
                   ),
-                  if (user?.bio != null)
-                    SizedBox(
-                      height: size.height * 0.26,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Bio',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300,
-                                  color: AppColors.grey,
-                                ),
-                              ),
-                              Text(
-                                '${user?.bio}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                                maxLines: 4,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: EditFields(
+                      controller: bioController,
+                      title: 'Bio',
+                      maxlines: null,
                     ),
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
                   Center(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            child: const EditProfile(),
-                            type: PageTransitionType.fade,
-                          ),
-                        );
-                      },
+                      onTap: () {},
                       child: const CustomButtonGreen(
-                        title: 'Edit Profile',
+                        title: 'Save',
                       ),
                     ),
                   ),
@@ -135,7 +122,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 top: size.height * 0.076,
                 left: size.width * 0.02,
                 child: GestureDetector(
-                  onTap: Navigator.of(context).pop,
+                  onTap: () {
+                    showAlertDialog(context);
+                  },
                   child: const Icon(
                     Icons.arrow_back_outlined,
                     size: 40,
@@ -146,6 +135,46 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           ),
         ),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Discard"),
+      onPressed: () {
+        Navigator.push(
+          context,
+          PageTransition(
+            child: const ProfilePage(),
+            type: PageTransitionType.fade,
+          ),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Discard"),
+      content: const Text("Discard current changes?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
