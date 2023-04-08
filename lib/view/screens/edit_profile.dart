@@ -1,5 +1,7 @@
+import 'dart:io';
+
+import 'package:chatit/core/utils.dart';
 import 'package:chatit/view/screens/profile_page.dart';
-import 'package:chatit/view/widgets/custom_textfield.dart';
 import 'package:chatit/view/widgets/edit_field_widget.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ import 'package:page_transition/page_transition.dart';
 import '../../constants/app_colors.dart';
 import '../../controllers/auth_controller.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/info_widget.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
   const EditProfile({super.key});
@@ -21,12 +22,32 @@ class EditProfile extends ConsumerStatefulWidget {
 class _EditProfileState extends ConsumerState<EditProfile> {
   TextEditingController bioController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  File? bannerFile;
+  File? profileFile;
 
   @override
   void dispose() {
     bioController.dispose();
     nameController.dispose();
     super.dispose();
+  }
+
+  void selectBannerImage() async {
+    final banner = await pickImage();
+    if (banner != null) {
+      setState(() {
+        bannerFile = banner;
+      });
+    }
+  }
+
+  void selectProfileImage() async {
+    final profile = await pickImage();
+    if (profile != null) {
+      setState(() {
+        profileFile = profile;
+      });
+    }
   }
 
   @override
@@ -41,19 +62,38 @@ class _EditProfileState extends ConsumerState<EditProfile> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  (user?.bannerPic == null)
-                      ? Container(
-                          height: size.height * 0.24,
-                          decoration:
-                              BoxDecoration(color: Colors.blueGrey[600]),
-                        )
-                      : SizedBox(
-                          height: size.height * 0.24,
-                          width: size.width,
-                          child: FancyShimmerImage(
-                            imageUrl: '${user?.bannerPic}',
-                            boxFit: BoxFit.cover,
-                          )),
+                  if (bannerFile != null)
+                    SizedBox(
+                      height: size.height * 0.24,
+                      width: size.width,
+                      child: GestureDetector(
+                        onTap: selectBannerImage,
+                        child: Image.file(
+                          bannerFile!,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  else
+                    (user?.bannerPic == null)
+                        ? GestureDetector(
+                            onTap: selectBannerImage,
+                            child: Container(
+                              height: size.height * 0.24,
+                              decoration:
+                                  BoxDecoration(color: Colors.blueGrey[600]),
+                            ),
+                          )
+                        : SizedBox(
+                            height: size.height * 0.24,
+                            width: size.width,
+                            child: GestureDetector(
+                              onTap: selectBannerImage,
+                              child: FancyShimmerImage(
+                                imageUrl: '${user?.bannerPic}',
+                                boxFit: BoxFit.cover,
+                              ),
+                            )),
                   SizedBox(height: size.height * 0.08),
                   Center(
                     child: Text(
@@ -113,9 +153,17 @@ class _EditProfileState extends ConsumerState<EditProfile> {
               Positioned(
                 top: size.height * 0.1582,
                 left: size.width * 0.34,
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage('${user?.profilePic}'),
-                  radius: 60,
+                child: GestureDetector(
+                  onTap: selectProfileImage,
+                  child: (profileFile != null)
+                      ? CircleAvatar(
+                          backgroundImage: Image.file(profileFile!).image,
+                          radius: 60,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage('${user?.profilePic}'),
+                          radius: 60,
+                        ),
                 ),
               ),
               Positioned(

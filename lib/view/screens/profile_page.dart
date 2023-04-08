@@ -1,6 +1,7 @@
 import 'package:chatit/constants/app_colors.dart';
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/view/screens/edit_profile.dart';
+import 'package:chatit/view/screens/home_page.dart';
 import 'package:chatit/view/widgets/custom_button.dart';
 import 'package:chatit/view/widgets/info_widget.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
@@ -135,7 +136,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 top: size.height * 0.076,
                 left: size.width * 0.02,
                 child: GestureDetector(
-                  onTap: Navigator.of(context).pop,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        child: const HomePage(),
+                        type: PageTransitionType.fade,
+                      ),
+                    );
+                  },
                   child: const Icon(
                     Icons.arrow_back_outlined,
                     size: 40,

@@ -83,12 +83,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  PopupMenuButton(
-                    iconSize: 28,
-                    itemBuilder: (ctx) => [
-                      _buildPopupMenuItem('Profile', Icons.person_2_outlined),
-                      _buildPopupMenuItem('Log-Out', Icons.logout_outlined),
-                    ],
+                  const Icon(
+                    Icons.logout_outlined,
+                    size: 30,
                   ),
                 ],
               ),
