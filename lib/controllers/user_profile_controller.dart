@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:chatit/models/apis/storage_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,14 +12,45 @@ final userProfileControllerProvider =
     StateNotifierProvider<UserProfileController, bool>((ref) {
   return UserProfileController(
     userApi: ref.watch(userApiProvider),
+    storageApi: ref.watch(storageAPIProvider),
   );
 });
 
 class UserProfileController extends StateNotifier<bool> {
   final UserApi _userApi;
-  UserProfileController({required UserApi userApi})
-      : _userApi = userApi,
+  final StorageAPI _storageApi;
+  UserProfileController({
+    required UserApi userApi,
+    required StorageAPI storageApi,
+  })  : _userApi = userApi,
+        _storageApi = storageApi,
         super(false);
+
+  void updateUserProfile({
+    required UserModel userModel,
+    required BuildContext context,
+    required File? bannerFile,
+    required File? profileFile,
+  }) async {
+    state = true;
+    if (bannerFile != null) {
+      final banerUrl = await _storageApi.uploadImage([bannerFile]);
+      userModel = userModel.copyWith(
+        bannerPic: banerUrl[0],
+      );
+    }
+
+    if (profileFile != null) {
+      final profileUrl = await _storageApi.uploadImage([profileFile]);
+      userModel = userModel.copyWith(
+        profilePic: profileUrl[0],
+      );
+    }
+    final res = await _userApi.updateUserData(userModel);
+    state = false;
+    res.fold((l) => showSnackbar(context, l.toString()),
+        (r) => Navigator.of(context).pop());
+  }
 
   void addToMessages({
     required UserModel user,
