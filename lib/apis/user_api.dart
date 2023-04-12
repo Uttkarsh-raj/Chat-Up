@@ -58,10 +58,21 @@ class UserApi implements IUserApi {
     return documents.documents;
   }
 
+  Future<List<model.Document>> searchUserById(String id) async {
+    final documents = await _db.listDocuments(
+      databaseId: AppWriteConstants.databaseId,
+      collectionId: AppWriteConstants.userCollectionId,
+      queries: [
+        Query.search('Document ID', id),
+      ],
+    );
+    return documents.documents;
+  }
+
   @override
   Future<Either<String, void>> addToContacts(UserModel user) async {
     try {
-      await _db.createDocument(
+      await _db.updateDocument(
         databaseId: AppWriteConstants.databaseId,
         collectionId: AppWriteConstants.userCollectionId,
         documentId: user.uid,

@@ -60,7 +60,7 @@ class UserProfileController extends StateNotifier<bool> {
   void addToMessages({
     required UserModel user,
     required BuildContext context,
-    required UserModel? currentUser,
+    required UserModel currentUser,
   }) async {
     if (currentUser != null) {
       if (!currentUser.contacts.contains(user.uid)) {

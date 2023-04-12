@@ -12,6 +12,14 @@ final searchUserProvider = FutureProvider.family((ref, String name) async {
   return exploreController.searchUser(name);
 });
 
+final searchUserbyIdProvider =
+    FutureProvider.family((ref, List<String> id) async {
+  final exploreController = ref.watch(exploreControllerProvider.notifier);
+  for (String i in id) {
+    return exploreController.searchUserById(i);
+  }
+});
+
 class ExploreController extends StateNotifier<bool> {
   final UserApi _userApi;
   ExploreController({required UserApi userApi})
@@ -20,6 +28,13 @@ class ExploreController extends StateNotifier<bool> {
 
   Future<List<UserModel>> searchUser(String name) async {
     final users = await _userApi.searchUserByName(name);
+    return users.map((e) {
+      return UserModel.fromMap(e.data);
+    }).toList();
+  }
+
+  Future<List<UserModel>> searchUserById(String id) async {
+    final users = await _userApi.searchUserById(id);
     return users.map((e) {
       return UserModel.fromMap(e.data);
     }).toList();

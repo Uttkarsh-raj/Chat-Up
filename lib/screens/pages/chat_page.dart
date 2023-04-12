@@ -16,7 +16,7 @@ class ChatsPage extends ConsumerStatefulWidget {
 }
 
 class _ChatsPageState extends ConsumerState<ChatsPage> {
-  final TextEditingController messageController = TextEditingController();
+  late TextEditingController messageController;
 
   PopupMenuItem _buildPopupMenuItem(String title, IconData icon) {
     return PopupMenuItem(
@@ -28,6 +28,12 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    messageController = TextEditingController(text: '');
+    super.initState();
   }
 
   @override
@@ -118,7 +124,7 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
         child: Column(
           children: [
             Container(
-              height: size.height * 0.69,
+              height: size.height * 0.78,
             ),
             const SizedBox(
               height: 3,
@@ -163,6 +169,10 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
                                         currentUser: currentUser,
                                       );
                                 }
+                                setState(() {
+                                  messageController =
+                                      TextEditingController(text: '');
+                                });
                               }
                             },
                             child: const Icon(
