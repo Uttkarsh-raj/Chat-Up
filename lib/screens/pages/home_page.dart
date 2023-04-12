@@ -1,6 +1,5 @@
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/explore_controller.dart';
-import 'package:chatit/screens/pages/profile_page.dart';
 import 'package:chatit/screens/widgets/custom_textfield.dart';
 import 'package:chatit/screens/widgets/search_tile.dart';
 import 'package:chatit/view/user_profile_view.dart';
@@ -58,7 +57,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 20, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(3, 20, 5, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -129,7 +128,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                               child: CircularProgressIndicator(),
                             ),
                           )
-                      : const SizedBox(),
+                      : Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: currentUser.contacts.length,
+                            itemBuilder: (context, index) {
+                              print(currentUser.contacts[index]);
+                              // final user = users[index];
+                              // return SearchTile(receiver: user);
+                            },
+                          ),
+                        ),
                 ],
               ),
             ),
