@@ -29,6 +29,7 @@ class EditFields extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: TextField(
+          keyboardType: TextInputType.name,
           controller: controller,
           maxLines: maxlines,
           decoration: InputDecoration(

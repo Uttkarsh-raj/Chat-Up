@@ -24,10 +24,17 @@ class EditProfile extends ConsumerStatefulWidget {
 }
 
 class _EditProfileState extends ConsumerState<EditProfile> {
-  TextEditingController bioController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  late TextEditingController bioController;
+  late TextEditingController nameController;
   File? bannerFile;
   File? profileFile;
+
+  @override
+  void initState() {
+    bioController = TextEditingController(text: widget.user?.bio ?? '');
+    nameController = TextEditingController(text: widget.user?.name ?? '');
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -154,7 +161,9 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                               ref
                                   .watch(userProfileControllerProvider.notifier)
                                   .updateUserProfile(
-                                    userModel: widget.user!,
+                                    userModel: widget.user!.copyWith(
+                                        bio: bioController.text,
+                                        name: nameController.text),
                                     context: context,
                                     bannerFile: bannerFile,
                                     profileFile: profileFile,

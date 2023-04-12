@@ -129,8 +129,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 top: size.height * 0.1582,
                 left: size.width * 0.34,
                 child: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage('${widget.copyofUser.profilePic}'),
+                  backgroundImage: NetworkImage(widget.copyofUser.profilePic),
                   radius: 60,
                 ),
               ),
