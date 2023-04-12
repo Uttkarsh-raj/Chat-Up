@@ -1,6 +1,6 @@
 import 'package:chatit/controllers/auth_controller.dart';
-import 'package:chatit/view/screens/home_page.dart';
-import 'package:chatit/view/screens/signup_page.dart';
+import 'package:chatit/screens/pages/home_page.dart';
+import 'package:chatit/screens/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

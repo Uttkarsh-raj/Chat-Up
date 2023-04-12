@@ -1,7 +1,7 @@
 import 'package:chatit/models/user_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/apis/user_api.dart';
+import '../apis/user_api.dart';
 
 final exploreControllerProvider = StateNotifierProvider((ref) {
   return ExploreController(userApi: ref.watch(userApiProvider));

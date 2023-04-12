@@ -1,14 +1,14 @@
 import 'package:appwrite/models.dart' as model;
-import 'package:chatit/models/apis/auth_api.dart';
-import 'package:chatit/models/apis/user_api.dart';
+import 'package:chatit/apis/auth_api.dart';
+import 'package:chatit/apis/user_api.dart';
 import 'package:chatit/models/user_model.dart';
-import 'package:chatit/view/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../core/utils.dart';
-import '../view/screens/login_page.dart';
+import '../screens/pages/home_page.dart';
+import '../screens/pages/login_page.dart';
 
 final authControllerProvider =
     StateNotifierProvider<AuthController, bool>((ref) {

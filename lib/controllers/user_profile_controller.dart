@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:chatit/models/apis/storage_api.dart';
+import 'package:chatit/apis/storage_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/utils.dart';
-import '../models/apis/user_api.dart';
+import '../apis/user_api.dart';
 import '../models/user_model.dart';
 
 final userProfileControllerProvider =
@@ -14,6 +14,11 @@ final userProfileControllerProvider =
     userApi: ref.watch(userApiProvider),
     storageApi: ref.watch(storageAPIProvider),
   );
+});
+
+final getlatestUserProfileDataProvider = StreamProvider((ref) {
+  final userApi = ref.watch(userApiProvider);
+  return userApi.getLatestUserProfileData();
 });
 
 class UserProfileController extends StateNotifier<bool> {

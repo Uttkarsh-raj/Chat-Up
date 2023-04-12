@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:chatit/controllers/user_profile_controller.dart';
 import 'package:chatit/core/utils.dart';
-import 'package:chatit/view/screens/profile_page.dart';
-import 'package:chatit/view/widgets/edit_field_widget.dart';
+import 'package:chatit/screens/pages/profile_page.dart';
+import 'package:chatit/screens/widgets/edit_field_widget.dart';
+import 'package:chatit/view/user_profile_view.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,10 +12,12 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../constants/app_colors.dart';
 import '../../controllers/auth_controller.dart';
+import '../../models/user_model.dart';
 import '../widgets/custom_button.dart';
 
 class EditProfile extends ConsumerStatefulWidget {
-  const EditProfile({super.key});
+  const EditProfile(this.user, {super.key});
+  final UserModel? user;
 
   @override
   ConsumerState<EditProfile> createState() => _EditProfileState();
@@ -53,7 +56,6 @@ class _EditProfileState extends ConsumerState<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(currentUserDetailsProvider).value;
     final isLoading = ref.watch(userProfileControllerProvider);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -79,7 +81,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                             ),
                           )
                         else
-                          (user?.bannerPic == null)
+                          (widget.user?.bannerPic == null)
                               ? GestureDetector(
                                   onTap: selectBannerImage,
                                   child: Container(
@@ -94,14 +96,14 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                   child: GestureDetector(
                                     onTap: selectBannerImage,
                                     child: FancyShimmerImage(
-                                      imageUrl: '${user?.bannerPic}',
+                                      imageUrl: '${widget.user?.bannerPic}',
                                       boxFit: BoxFit.cover,
                                     ),
                                   )),
                         SizedBox(height: size.height * 0.08),
                         Center(
                           child: Text(
-                            '${user?.name}',
+                            '${widget.user?.name}',
                             style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w500,
@@ -110,7 +112,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                         ),
                         Center(
                           child: Text(
-                            '@${user?.name}',
+                            '@${widget.user?.name}',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w300,
@@ -125,8 +127,9 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                           padding: const EdgeInsets.all(8.0),
                           child: EditFields(
                             controller: nameController,
-                            title:
-                                (user?.name == null) ? 'name' : '${user?.name}',
+                            title: (widget.user?.name == null)
+                                ? 'name'
+                                : '${widget.user?.name}',
                             maxlines: 1,
                             height: size.height * 0.07,
                           ),
@@ -151,7 +154,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                               ref
                                   .watch(userProfileControllerProvider.notifier)
                                   .updateUserProfile(
-                                    userModel: user!,
+                                    userModel: widget.user!,
                                     context: context,
                                     bannerFile: bannerFile,
                                     profileFile: profileFile,
@@ -176,7 +179,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                               )
                             : CircleAvatar(
                                 backgroundImage:
-                                    NetworkImage('${user?.profilePic}'),
+                                    NetworkImage('${widget.user?.profilePic}'),
                                 radius: 60,
                               ),
                       ),
@@ -203,6 +206,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
 
   showAlertDialog(BuildContext context) {
     // set up the buttons
+    final user = ref.watch(currentUserDetailsProvider).value;
     Widget cancelButton = TextButton(
       child: const Text("Cancel"),
       onPressed: () {
@@ -215,7 +219,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
         Navigator.push(
           context,
           PageTransition(
-            child: const ProfilePage(),
+            child: UserProfileView(user!),
             type: PageTransitionType.fade,
           ),
         );

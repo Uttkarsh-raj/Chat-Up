@@ -12,16 +12,22 @@ abstract class IUserApi {
   Future<model.Document> getUserData(String uid);
   Future<Either<String, void>> addToContacts(UserModel user);
   Future<Either<String, void>> updateUserData(UserModel userModel);
+  Stream<RealtimeMessage> getLatestUserProfileData();
 }
 
 final userApiProvider = Provider((ref) {
   final db = ref.watch(appwriteDatabaseProvider);
-  return UserApi(db: db);
+  return UserApi(
+      db: ref.watch(appwriteDatabaseProvider),
+      realtime: ref.watch(appwriteRealtimeProvider));
 });
 
 class UserApi implements IUserApi {
   final Databases _db;
-  UserApi({required Databases db}) : _db = db;
+  final Realtime _realtime;
+  UserApi({required Databases db, required Realtime realtime})
+      : _db = db,
+        _realtime = realtime;
 
   @override
   Future<Either<String, void>> saveUserData(UserModel userModel) async {
@@ -95,5 +101,12 @@ class UserApi implements IUserApi {
     } catch (e) {
       return left(e.toString());
     }
+  }
+
+  @override
+  Stream<RealtimeMessage> getLatestUserProfileData() {
+    return _realtime.subscribe([
+      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.userCollectionId}.documents'
+    ]).stream;
   }
 }

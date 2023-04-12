@@ -1,7 +1,7 @@
 import 'package:chatit/constants/app_colors.dart';
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/user_profile_controller.dart';
-import 'package:chatit/view/widgets/custom_button.dart';
+import 'package:chatit/screens/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

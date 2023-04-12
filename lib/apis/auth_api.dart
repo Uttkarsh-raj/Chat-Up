@@ -1,8 +1,9 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as model;
-import 'package:chatit/models/provider/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../models/provider/providers.dart';
 
 abstract class IAuthApi {
   Future<Either<String, model.Account>> signup({

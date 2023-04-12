@@ -3,7 +3,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:chatit/constants/appwrite_constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../provider/providers.dart';
+import '../models/provider/providers.dart';
 
 final storageAPIProvider = Provider((ref) {
   return StorageAPI(
@@ -30,5 +30,3 @@ class StorageAPI {
     return imageLinks;
   }
 }
-
-class AppwriteConstants {}
