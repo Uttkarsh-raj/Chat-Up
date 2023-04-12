@@ -104,7 +104,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     controller: searchController,
                   ),
                   const SizedBox(height: 10),
-                  isShowUsers
+                  (searchController.text.isNotEmpty)
                       ? ref
                           .watch(searchUserProvider(searchController.text))
                           .when(
@@ -128,18 +128,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                               child: CircularProgressIndicator(),
                             ),
                           )
-                      : Expanded(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: currentUser.contacts.length,
-                            itemBuilder: (context, index) {
-                              print(currentUser.contacts[index]);
-                              // final user = users[index];
-                              // return SearchTile(receiver: user);
-                            },
-                          ),
-                        ),
+                      : (currentUser.contacts.isNotEmpty)
+                          ? Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: currentUser.contacts.length,
+                                itemBuilder: (context, index) {
+                                  final user = ref
+                                      .watch(userDetailsProvider(
+                                          currentUser.contacts[index]))
+                                      .value;
+                                  if (user != null) {
+                                    return SearchTile(receiver: user);
+                                  }
+                                },
+                              ),
+                            )
+                          : const SizedBox(),
                 ],
               ),
             ),
