@@ -1,10 +1,20 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:chatit/constants/appwrite_constants.dart';
 import 'package:chatit/models/message_model.dart';
+import 'package:chatit/models/provider/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
+final messageApiProvider = Provider((ref) {
+  return MessageApi(
+      db: ref.watch(
+    appwriteDatabaseProvider,
+  ));
+});
+
 abstract class IMessageApi {
-  Future<Either<String, void>> saveMessage(MessageModel messageModel);
+  Future<Either<String, Document>> sendMessage(MessageModel messageModel);
 }
 
 class MessageApi extends IMessageApi {
@@ -13,14 +23,15 @@ class MessageApi extends IMessageApi {
   MessageApi({required Databases db}) : _db = db;
 
   @override
-  Future<Either<String, void>> saveMessage(MessageModel messageModel) async {
+  Future<Either<String, Document>> sendMessage(
+      MessageModel messageModel) async {
     try {
-      await _db.createDocument(
+      final document = await _db.createDocument(
           databaseId: AppWriteConstants.databaseId,
           collectionId: AppWriteConstants.messagesCollectionId,
-          documentId: messageModel.mId,
+          documentId: ID.unique(),
           data: messageModel.toMap());
-      return right(null);
+      return right(document);
     } on AppwriteException catch (e) {
       return left(e.message ?? 'Some unexpected error occured');
     } catch (e) {

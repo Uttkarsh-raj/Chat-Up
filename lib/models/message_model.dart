@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
+@immutable
 class MessageModel {
   final String mId;
   final String receiverId;
   final String senderId;
   final String message;
   final DateTime createdOn;
-  MessageModel({
+  const MessageModel({
     required this.mId,
     required this.receiverId,
     required this.senderId,
@@ -42,18 +44,13 @@ class MessageModel {
 
   factory MessageModel.fromMap(Map<String, dynamic> map) {
     return MessageModel(
-      mId: map['\$mid'] as String,
+      mId: map['\$id'] as String,
       receiverId: map['receiverId'] as String,
       senderId: map['senderId'] as String,
       message: map['message'] as String,
       createdOn: DateTime.fromMillisecondsSinceEpoch(map['createdOn'] as int),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory MessageModel.fromJson(String source) =>
-      MessageModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {

@@ -1,5 +1,6 @@
 import 'package:chatit/constants/app_colors.dart';
 import 'package:chatit/controllers/auth_controller.dart';
+import 'package:chatit/controllers/message_controller.dart';
 import 'package:chatit/controllers/user_profile_controller.dart';
 import 'package:chatit/screens/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,14 @@ class ChatsPage extends ConsumerStatefulWidget {
 
 class _ChatsPageState extends ConsumerState<ChatsPage> {
   late TextEditingController messageController;
+
+  void sendMessage() {
+    ref.read(messageControllProvider.notifier).sendMessage(
+          text: messageController.text,
+          rec: widget.receiver,
+          context: context,
+        );
+  }
 
   PopupMenuItem _buildPopupMenuItem(String title, IconData icon) {
     return PopupMenuItem(
@@ -45,6 +54,7 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
+    final isLoading = ref.watch(messageControllProvider);
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -120,76 +130,79 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: size.height * 0.78,
-            ),
-            const SizedBox(
-              height: 3,
-            ),
-            CustomButton(
-              height: size.height * 0.08,
-              width: size.width * 0.95,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        enableSuggestions: true,
-                        keyboardType: TextInputType.text,
-                        maxLines: null,
-                        controller: messageController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          icon: GestureDetector(
-                            onTap: () {},
-                            child: const Icon(
-                              Icons.emoji_emotions_outlined,
-                              size: 26,
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: size.height * 0.78,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  CustomButton(
+                    height: size.height * 0.08,
+                    width: size.width * 0.95,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              enableSuggestions: true,
+                              keyboardType: TextInputType.text,
+                              maxLines: null,
+                              controller: messageController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                icon: GestureDetector(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.emoji_emotions_outlined,
+                                    size: 26,
+                                  ),
+                                ),
+                                iconColor: AppColors.grey,
+                                hintText: 'Type a message',
+                                hintStyle: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                                suffixIcon: GestureDetector(
+                                  onTap: () {
+                                    if (messageController.text.isNotEmpty) {
+                                      if (currentUser != null) {
+                                        ref
+                                            .read(userProfileControllerProvider
+                                                .notifier)
+                                            .addToMessages(
+                                              user: widget.receiver,
+                                              context: context,
+                                              currentUser: currentUser,
+                                            );
+                                      }
+                                      sendMessage();
+                                      setState(() {
+                                        messageController =
+                                            TextEditingController(text: '');
+                                      });
+                                    }
+                                  },
+                                  child: const Icon(
+                                    Icons.send_outlined,
+                                  ),
+                                ),
+                                suffixIconColor: AppColors.grey,
+                              ),
                             ),
-                          ),
-                          iconColor: AppColors.grey,
-                          hintText: 'Type a message',
-                          hintStyle: const TextStyle(
-                            fontSize: 18,
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              if (messageController.text.isNotEmpty) {
-                                if (currentUser != null) {
-                                  ref
-                                      .read(userProfileControllerProvider
-                                          .notifier)
-                                      .addToMessages(
-                                        user: widget.receiver,
-                                        context: context,
-                                        currentUser: currentUser,
-                                      );
-                                }
-                                setState(() {
-                                  messageController =
-                                      TextEditingController(text: '');
-                                });
-                              }
-                            },
-                            child: const Icon(
-                              Icons.send_outlined,
-                            ),
-                          ),
-                          suffixIconColor: AppColors.grey,
-                        ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
