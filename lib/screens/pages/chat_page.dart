@@ -132,16 +132,16 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: size.height * 0.78,
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  CustomButton(
+          : Stack(
+              children: [
+                Container(
+                    // color: Colors.red,
+                    // height: double.infinity,
+                    ),
+                Positioned(
+                  top: size.height * 0.724,
+                  left: size.width * 0.025,
+                  child: CustomButton(
                     height: size.height * 0.08,
                     width: size.width * 0.95,
                     child: Padding(
@@ -199,9 +199,9 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
                         ],
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
     );
   }

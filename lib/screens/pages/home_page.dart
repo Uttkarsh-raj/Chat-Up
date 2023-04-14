@@ -52,101 +52,103 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       body: (currentUser == null)
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(3, 20, 5, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                child: UserProfileView(currentUser),
-                                type: PageTransitionType.fade,
-                              ),
-                            );
-                          },
-                          child: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(currentUser.profilePic),
-                            radius: 30,
-                          ),
-                        ),
-                        const Text(
-                          'Chat-Up',
-                          style: TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const Icon(
-                          Icons.logout_outlined,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  CustomTextField(
-                    onSubmmit: (value) {
-                      setState(() {
-                        isShowUsers = true;
-                      });
-                    },
-                    label: 'Search',
-                    icon: Icons.search_outlined,
-                    obscure: false,
-                    controller: searchController,
-                  ),
-                  const SizedBox(height: 10),
-                  (searchController.text.isNotEmpty)
-                      ? ref
-                          .watch(searchUserProvider(searchController.text))
-                          .when(
-                            data: (users) {
-                              return Expanded(
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: users.length,
-                                  itemBuilder: (context, index) {
-                                    final user = users[index];
-                                    return SearchTile(receiver: user);
-                                  },
+          : SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  child: UserProfileView(currentUser),
+                                  type: PageTransitionType.fade,
                                 ),
                               );
                             },
-                            error: (error, st) {
-                              return Text(error.toString());
-                            },
-                            loading: () => const Center(
-                              child: CircularProgressIndicator(),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(currentUser.profilePic),
+                              radius: 30,
                             ),
-                          )
-                      : (currentUser.contacts.isNotEmpty)
-                          ? Expanded(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: currentUser.contacts.length,
-                                itemBuilder: (context, index) {
-                                  final user = ref
-                                      .watch(userDetailsProvider(
-                                          currentUser.contacts[index]))
-                                      .value;
-                                  if (user != null) {
-                                    return SearchTile(receiver: user);
-                                  }
-                                },
+                          ),
+                          const Text(
+                            'Chat-Up',
+                            style: TextStyle(
+                              fontSize: 27,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.logout_outlined,
+                            size: 30,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    CustomTextField(
+                      onSubmmit: (value) {
+                        setState(() {
+                          isShowUsers = true;
+                        });
+                      },
+                      label: 'Search',
+                      icon: Icons.search_outlined,
+                      obscure: false,
+                      controller: searchController,
+                    ),
+                    const SizedBox(height: 10),
+                    (searchController.text.isNotEmpty)
+                        ? ref
+                            .watch(searchUserProvider(searchController.text))
+                            .when(
+                              data: (users) {
+                                return Expanded(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: users.length,
+                                    itemBuilder: (context, index) {
+                                      final user = users[index];
+                                      return SearchTile(receiver: user);
+                                    },
+                                  ),
+                                );
+                              },
+                              error: (error, st) {
+                                return Text(error.toString());
+                              },
+                              loading: () => const Center(
+                                child: CircularProgressIndicator(),
                               ),
                             )
-                          : const SizedBox(),
-                ],
+                        : (currentUser.contacts.isNotEmpty)
+                            ? Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: currentUser.contacts.length,
+                                  itemBuilder: (context, index) {
+                                    final user = ref
+                                        .watch(userDetailsProvider(
+                                            currentUser.contacts[index]))
+                                        .value;
+                                    if (user != null) {
+                                      return SearchTile(receiver: user);
+                                    }
+                                  },
+                                ),
+                              )
+                            : const SizedBox(),
+                  ],
+                ),
               ),
             ),
     );
