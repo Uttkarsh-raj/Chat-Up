@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+// import 'package:appwrite/models.dart' as model;
 import 'package:chatit/constants/appwrite_constants.dart';
 import 'package:chatit/models/message_model.dart';
 import 'package:chatit/models/provider/providers.dart';
@@ -15,6 +16,7 @@ final messageApiProvider = Provider((ref) {
 
 abstract class IMessageApi {
   Future<Either<String, Document>> sendMessage(MessageModel messageModel);
+  Future<List<Document>> getMessages();
 }
 
 class MessageApi extends IMessageApi {
@@ -37,5 +39,19 @@ class MessageApi extends IMessageApi {
     } catch (e) {
       return left(e.toString());
     }
+  }
+
+  @override
+  Future<List<Document>> getMessages() async {
+    final documents = await _db.listDocuments(
+      databaseId: AppWriteConstants.databaseId,
+      collectionId: AppWriteConstants.messagesCollectionId,
+      queries: [
+        Query.search('receiverId', '642b0c840c49c697dc60'),
+        // Query.search('senderId', '642eaa2cb782c5b0eada'),
+        // Query.orderAsc('createdOn'),
+      ],
+    );
+    return documents.documents;
   }
 }

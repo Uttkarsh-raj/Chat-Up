@@ -1,3 +1,4 @@
+import 'package:appwrite/models.dart';
 import 'package:chatit/apis/message_api.dart';
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/core/utils.dart';
@@ -12,6 +13,11 @@ final messageControllProvider =
     ref: ref,
     messageApi: ref.watch(messageApiProvider),
   );
+});
+
+final getMessageProvider = FutureProvider((ref) async {
+  final messagecontroller = ref.watch(messageControllProvider.notifier);
+  return messagecontroller.getMessages();
 });
 
 class MessageController extends StateNotifier<bool> {
@@ -50,6 +56,11 @@ class MessageController extends StateNotifier<bool> {
     final response = await _mssgApi.sendMessage(messageModel);
     state = false;
     response.fold((l) => showSnackbar(context, l.toString()), (r) => null);
+  }
+
+  Future<List<MessageModel>> getMessages() async {
+    final messages = await _mssgApi.getMessages();
+    return messages.map((e) => MessageModel.fromMap(e.data)).toList();
   }
 
   String _getLinkFromText(String text) {

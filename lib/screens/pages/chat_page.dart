@@ -2,10 +2,10 @@ import 'package:chatit/constants/app_colors.dart';
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/message_controller.dart';
 import 'package:chatit/controllers/user_profile_controller.dart';
+import 'package:chatit/screens/pages/messages.dart';
 import 'package:chatit/screens/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../models/user_model.dart';
 
 class ChatsPage extends ConsumerStatefulWidget {
@@ -55,6 +55,8 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
     final isLoading = ref.watch(messageControllProvider);
+    // final getMessagesFuture =
+    //     ref.watch(getMessagesProvider);
 
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -130,79 +132,78 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
           ),
         ],
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Stack(
-              children: [
-                Container(
-                    // color: Colors.red,
-                    // height: double.infinity,
-                    ),
-                Positioned(
-                  top: size.height * 0.724,
-                  left: size.width * 0.025,
-                  child: CustomButton(
-                    height: size.height * 0.08,
-                    width: size.width * 0.95,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              enableSuggestions: true,
-                              keyboardType: TextInputType.text,
-                              maxLines: null,
-                              controller: messageController,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                icon: GestureDetector(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    Icons.emoji_emotions_outlined,
-                                    size: 26,
-                                  ),
-                                ),
-                                iconColor: AppColors.grey,
-                                hintText: 'Type a message',
-                                hintStyle: const TextStyle(
-                                  fontSize: 18,
-                                ),
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    if (messageController.text.isNotEmpty) {
-                                      if (currentUser != null) {
-                                        ref
-                                            .read(userProfileControllerProvider
-                                                .notifier)
-                                            .addToMessages(
-                                              user: widget.receiver,
-                                              context: context,
-                                              currentUser: currentUser,
-                                            );
-                                      }
-                                      sendMessage();
-                                      setState(() {
-                                        messageController =
-                                            TextEditingController(text: '');
-                                      });
-                                    }
-                                  },
-                                  child: const Icon(
-                                    Icons.send_outlined,
-                                  ),
-                                ),
-                                suffixIconColor: AppColors.grey,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      body: const Messages(),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     children: [
+      //       SizedBox(
+      //         height: size.height * 0.72,
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+      //         child: CustomButton(
+      //           height: size.height * 0.08,
+      //           width: size.width * 0.94,
+      //           child: Padding(
+      //             padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
+      //             child: Row(
+      //               children: [
+      //                 Expanded(
+      //                   child: TextField(
+      //                     enableSuggestions: true,
+      //                     keyboardType: TextInputType.text,
+      //                     maxLines: null,
+      //                     controller: messageController,
+      //                     decoration: InputDecoration(
+      //                       border: InputBorder.none,
+      //                       icon: GestureDetector(
+      //                         onTap: () {},
+      //                         child: const Icon(
+      //                           Icons.emoji_emotions_outlined,
+      //                           size: 26,
+      //                         ),
+      //                       ),
+      //                       iconColor: AppColors.grey,
+      //                       hintText: 'Type a message',
+      //                       hintStyle: const TextStyle(
+      //                         fontSize: 18,
+      //                       ),
+      //                       suffixIcon: GestureDetector(
+      //                         onTap: () {
+      //                           if (messageController.text.isNotEmpty) {
+      //                             if (currentUser != null) {
+      //                               ref
+      //                                   .read(userProfileControllerProvider
+      //                                       .notifier)
+      //                                   .addToMessages(
+      //                                     user: widget.receiver,
+      //                                     context: context,
+      //                                     currentUser: currentUser,
+      //                                   );
+      //                             }
+      //                             sendMessage();
+      //                             setState(() {
+      //                               messageController =
+      //                                   TextEditingController(text: '');
+      //                             });
+      //                           }
+      //                         },
+      //                         child: const Icon(
+      //                           Icons.send_outlined,
+      //                         ),
+      //                       ),
+      //                       suffixIconColor: AppColors.grey,
+      //                     ),
+      //                   ),
+      //                 )
+      //               ],
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
