@@ -1,4 +1,5 @@
 import 'package:chatit/controllers/message_controller.dart';
+import 'package:chatit/screens/widgets/message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,7 +17,7 @@ class Messages extends ConsumerWidget {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final user = data[index];
-                return Center(child: Text(user.message));
+                return MessageWidget(m: user);
               },
             );
           },
