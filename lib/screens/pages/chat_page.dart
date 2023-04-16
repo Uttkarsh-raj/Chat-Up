@@ -132,78 +132,79 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
           ),
         ],
       ),
-      body: const Messages(),
-      // body: SingleChildScrollView(
-      //   child: Column(
-      //     children: [
-      //       SizedBox(
-      //         height: size.height * 0.72,
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-      //         child: CustomButton(
-      //           height: size.height * 0.08,
-      //           width: size.width * 0.94,
-      //           child: Padding(
-      //             padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
-      //             child: Row(
-      //               children: [
-      //                 Expanded(
-      //                   child: TextField(
-      //                     enableSuggestions: true,
-      //                     keyboardType: TextInputType.text,
-      //                     maxLines: null,
-      //                     controller: messageController,
-      //                     decoration: InputDecoration(
-      //                       border: InputBorder.none,
-      //                       icon: GestureDetector(
-      //                         onTap: () {},
-      //                         child: const Icon(
-      //                           Icons.emoji_emotions_outlined,
-      //                           size: 26,
-      //                         ),
-      //                       ),
-      //                       iconColor: AppColors.grey,
-      //                       hintText: 'Type a message',
-      //                       hintStyle: const TextStyle(
-      //                         fontSize: 18,
-      //                       ),
-      //                       suffixIcon: GestureDetector(
-      //                         onTap: () {
-      //                           if (messageController.text.isNotEmpty) {
-      //                             if (currentUser != null) {
-      //                               ref
-      //                                   .read(userProfileControllerProvider
-      //                                       .notifier)
-      //                                   .addToMessages(
-      //                                     user: widget.receiver,
-      //                                     context: context,
-      //                                     currentUser: currentUser,
-      //                                   );
-      //                             }
-      //                             sendMessage();
-      //                             setState(() {
-      //                               messageController =
-      //                                   TextEditingController(text: '');
-      //                             });
-      //                           }
-      //                         },
-      //                         child: const Icon(
-      //                           Icons.send_outlined,
-      //                         ),
-      //                       ),
-      //                       suffixIconColor: AppColors.grey,
-      //                     ),
-      //                   ),
-      //                 )
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+      // body: const Messages(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.72,
+              child: const Messages(),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: CustomButton(
+                height: size.height * 0.08,
+                width: size.width * 0.94,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          enableSuggestions: true,
+                          keyboardType: TextInputType.text,
+                          maxLines: null,
+                          controller: messageController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            icon: GestureDetector(
+                              onTap: () {},
+                              child: const Icon(
+                                Icons.emoji_emotions_outlined,
+                                size: 26,
+                              ),
+                            ),
+                            iconColor: AppColors.grey,
+                            hintText: 'Type a message',
+                            hintStyle: const TextStyle(
+                              fontSize: 18,
+                            ),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                if (messageController.text.isNotEmpty) {
+                                  if (currentUser != null) {
+                                    ref
+                                        .read(userProfileControllerProvider
+                                            .notifier)
+                                        .addToMessages(
+                                          user: widget.receiver,
+                                          context: context,
+                                          currentUser: currentUser,
+                                        );
+                                  }
+                                  sendMessage();
+                                  setState(() {
+                                    messageController =
+                                        TextEditingController(text: '');
+                                  });
+                                }
+                              },
+                              child: const Icon(
+                                Icons.send_outlined,
+                              ),
+                            ),
+                            suffixIconColor: AppColors.grey,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
