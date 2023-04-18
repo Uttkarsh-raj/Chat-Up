@@ -15,11 +15,8 @@ final messageControllProvider =
 });
 
 final getMessageProvider = FutureProvider.family((ref, String receiver) async {
-  await Future.delayed(const Duration(seconds: 3));
+  // await Future.delayed(const Duration(seconds: 3));
   final messagecontroller = ref.watch(messageControllProvider.notifier);
-  // var m = messagecontroller.getMessages(d[0], d[1]);
-  // print('fin len: ${m}');
-
   return messagecontroller.getMessages(receiver);
 });
 
