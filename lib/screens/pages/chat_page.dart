@@ -138,7 +138,7 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
           children: [
             SizedBox(
               height: size.height * 0.72,
-              child: const Messages(),
+              child: Messages(widget.receiver),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),

@@ -3,14 +3,16 @@ import 'package:chatit/screens/widgets/message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/user_model.dart';
+
 class Messages extends ConsumerWidget {
-  const Messages({super.key});
+  const Messages(this.receiver, {super.key});
+  final UserModel receiver;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(getMessageProvider).when(
+    return ref.watch(getMessageProvider(receiver.uid)).when(
           data: (data) {
-            print('len: ${data.length}');
             return ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,

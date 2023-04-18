@@ -1,4 +1,3 @@
-import 'package:appwrite/models.dart';
 import 'package:chatit/apis/message_api.dart';
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/core/utils.dart';
@@ -15,9 +14,13 @@ final messageControllProvider =
   );
 });
 
-final getMessageProvider = FutureProvider((ref) async {
+final getMessageProvider = FutureProvider.family((ref, String receiver) async {
+  await Future.delayed(const Duration(seconds: 3));
   final messagecontroller = ref.watch(messageControllProvider.notifier);
-  return messagecontroller.getMessages();
+  // var m = messagecontroller.getMessages(d[0], d[1]);
+  // print('fin len: ${m}');
+
+  return messagecontroller.getMessages(receiver);
 });
 
 class MessageController extends StateNotifier<bool> {
@@ -58,9 +61,13 @@ class MessageController extends StateNotifier<bool> {
     response.fold((l) => showSnackbar(context, l.toString()), (r) => null);
   }
 
-  Future<List<MessageModel>> getMessages() async {
-    final messages = await _mssgApi.getMessages();
-    return messages.map((e) => MessageModel.fromMap(e.data)).toList();
+  Future<List<MessageModel>> getMessages(String receiver) async {
+    // print('rec: $receiver');
+    final messages = await _mssgApi.getMessages(receiver);
+    print(messages.length);
+    var m = messages.map((e) => MessageModel.fromMap(e.data)).toList();
+    print('lenMap: ${m.length}');
+    return m;
   }
 
   String _getLinkFromText(String text) {

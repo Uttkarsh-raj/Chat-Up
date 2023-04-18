@@ -16,7 +16,7 @@ final messageApiProvider = Provider((ref) {
 
 abstract class IMessageApi {
   Future<Either<String, Document>> sendMessage(MessageModel messageModel);
-  Future<List<Document>> getMessages();
+  Future<List<Document>> getMessages(String receiver);
 }
 
 class MessageApi extends IMessageApi {
@@ -42,13 +42,13 @@ class MessageApi extends IMessageApi {
   }
 
   @override
-  Future<List<Document>> getMessages() async {
+  Future<List<Document>> getMessages(String receiver) async {
     final documents = await _db.listDocuments(
       databaseId: AppWriteConstants.databaseId,
       collectionId: AppWriteConstants.messagesCollectionId,
       queries: [
-        Query.search('receiverId', '642b0c840c49c697dc60'),
-        // Query.search('senderId', '642eaa2cb782c5b0eada'),
+        Query.search('receiverId', receiver),
+        // Query.search('senderId', sender),
         // Query.orderAsc('createdOn'),
       ],
     );
