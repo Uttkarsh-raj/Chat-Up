@@ -59,11 +59,8 @@ class MessageController extends StateNotifier<bool> {
   }
 
   Future<List<MessageModel>> getMessages(String receiver) async {
-    // print('rec: $receiver');
     final messages = await _mssgApi.getMessages(receiver);
-    print(messages.length);
     var m = messages.map((e) => MessageModel.fromMap(e.data)).toList();
-    print('lenMap: ${m.length}');
     return m;
   }
 

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:chatit/controllers/user_profile_controller.dart';
 import 'package:chatit/core/utils.dart';
-import 'package:chatit/screens/pages/profile_page.dart';
 import 'package:chatit/screens/widgets/edit_field_widget.dart';
 import 'package:chatit/view/user_profile_view.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
