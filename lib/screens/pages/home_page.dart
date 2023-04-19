@@ -72,10 +72,25 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 ),
                               );
                             },
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(currentUser.profilePic),
-                              radius: 30,
+                            child: Stack(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(currentUser.profilePic),
+                                  radius: 30,
+                                ),
+                                if (currentUser.bannerPic == null ||
+                                    currentUser.profilePic == null ||
+                                    currentUser.bio == null)
+                                  const CircleAvatar(
+                                    radius: 6,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: 5,
+                                    ),
+                                  )
+                              ],
                             ),
                           ),
                           const Text(
