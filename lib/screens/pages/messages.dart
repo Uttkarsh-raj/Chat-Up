@@ -103,12 +103,14 @@ class Messages extends ConsumerWidget {
             }
             return ref.watch(sortedMessageProvider).when(
                   data: (data) {
+                    int d = data.length - 1;
                     return ListView.builder(
+                      reverse: true,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: data.length,
                       itemBuilder: (context, index) {
-                        final user = data[index];
+                        final user = data[d - index];
                         return MessageWidget(
                           m: user,
                           u: sender,
