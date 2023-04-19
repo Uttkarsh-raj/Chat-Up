@@ -48,7 +48,7 @@ class MessageApi extends IMessageApi {
       collectionId: AppWriteConstants.messagesCollectionId,
       queries: [
         Query.search('receiverId', receiver),
-        // Query.search('senderId', sender),
+        // Query.search('senderId', '642eaa2cb782c5b0eada'),
         // Query.orderAsc('createdOn'),
       ],
     );
