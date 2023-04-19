@@ -4,6 +4,7 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../models/user_model.dart';
 import '../pages/chat_page.dart';
+import '../pages/profile_page.dart';
 
 class SearchTile extends StatelessWidget {
   final UserModel receiver;
@@ -33,11 +34,22 @@ class SearchTile extends StatelessWidget {
           ),
         );
       },
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(
-          receiver.profilePic,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            PageTransition(
+              child: ProfilePage(receiver),
+              type: PageTransitionType.fade,
+            ),
+          );
+        },
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(
+            receiver.profilePic,
+          ),
+          radius: 30,
         ),
-        radius: 30,
       ),
       title: Text(
         receiver.name,

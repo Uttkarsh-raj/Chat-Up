@@ -1,4 +1,5 @@
 import 'package:chatit/constants/app_colors.dart';
+import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/screens/widgets/custom_button.dart';
 import 'package:chatit/screens/widgets/info_widget.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
@@ -21,6 +22,7 @@ class ProfilePage extends ConsumerStatefulWidget {
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final currentUser = ref.watch(currentUserDetailsProvider).value;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -107,22 +109,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            child: EditProfile(widget.copyofUser),
-                            type: PageTransitionType.fade,
-                          ),
-                        );
-                      },
-                      child: const CustomButtonGreen(
-                        title: 'Edit Profile',
+                  if (widget.copyofUser.uid == currentUser?.uid)
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: EditProfile(widget.copyofUser),
+                              type: PageTransitionType.fade,
+                            ),
+                          );
+                        },
+                        child: const CustomButtonGreen(
+                          title: 'Edit Profile',
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
               Positioned(

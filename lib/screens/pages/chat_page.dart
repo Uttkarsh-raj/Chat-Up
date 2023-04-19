@@ -3,9 +3,11 @@ import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/message_controller.dart';
 import 'package:chatit/controllers/user_profile_controller.dart';
 import 'package:chatit/screens/pages/messages.dart';
+import 'package:chatit/screens/pages/profile_page.dart';
 import 'package:chatit/screens/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 import '../../models/user_model.dart';
 
 class ChatsPage extends ConsumerStatefulWidget {
@@ -80,41 +82,52 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
           ),
         ),
         centerTitle: true,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                widget.receiver.profilePic,
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              PageTransition(
+                child: ProfilePage(widget.receiver),
+                type: PageTransitionType.fade,
               ),
-              radius: 27,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-              children: [
-                Text(
-                  widget.receiver.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  widget.receiver.profilePic,
+                ),
+                radius: 27,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: [
+                  Text(
+                    widget.receiver.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                Text(
-                  '@${widget.receiver.name}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: AppColors.grey,
+                  const SizedBox(
+                    height: 3,
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Text(
+                    '@${widget.receiver.name}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         actions: [
           Padding(
