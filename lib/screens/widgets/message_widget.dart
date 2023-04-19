@@ -14,8 +14,9 @@ class MessageWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: 14, right: 14, top: 9, bottom: 0),
       child: Align(
-        alignment:
-            (u.uid == m.senderId) ? (Alignment.topLeft) : (Alignment.topRight),
+        alignment: (u.uid == m.senderId)
+            ? (Alignment.bottomLeft)
+            : (Alignment.bottomRight),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

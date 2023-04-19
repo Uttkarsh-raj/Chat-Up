@@ -1,6 +1,7 @@
 import 'package:chatit/controllers/message_controller.dart';
 import 'package:chatit/models/message_model.dart';
 import 'package:chatit/screens/widgets/message_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -127,12 +128,14 @@ class Messages extends ConsumerWidget {
           loading: () {
             return ref.watch(sortedMessageProvider).when(
                   data: (data) {
+                    int d = data.length - 1;
                     return ListView.builder(
+                      reverse: true,
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: data.length,
                       itemBuilder: (context, index) {
-                        final user = data[index];
+                        final user = data[d - index];
                         return MessageWidget(
                           m: user,
                           u: sender,
