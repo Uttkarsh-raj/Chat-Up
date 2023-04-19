@@ -10,19 +10,24 @@ import 'package:fpdart/fpdart.dart';
 final messageApiProvider = Provider((ref) {
   return MessageApi(
       db: ref.watch(
-    appwriteDatabaseProvider,
-  ));
+        appwriteDatabaseProvider,
+      ),
+      realtime: ref.watch(appwriteRealtimeProvider));
 });
 
 abstract class IMessageApi {
   Future<Either<String, Document>> sendMessage(MessageModel messageModel);
   Future<List<Document>> getMessages(String receiver);
+  Stream<RealtimeMessage> getLatestMessageData();
 }
 
 class MessageApi extends IMessageApi {
   final Databases _db;
+  final Realtime _realtime;
 
-  MessageApi({required Databases db}) : _db = db;
+  MessageApi({required Databases db, required Realtime realtime})
+      : _db = db,
+        _realtime = realtime;
 
   @override
   Future<Either<String, Document>> sendMessage(
@@ -48,10 +53,15 @@ class MessageApi extends IMessageApi {
       collectionId: AppWriteConstants.messagesCollectionId,
       queries: [
         Query.search('receiverId', receiver),
-        // Query.search('senderId', '642eaa2cb782c5b0eada'),
-        // Query.orderAsc('createdOn'),
       ],
     );
     return documents.documents;
+  }
+
+  @override
+  Stream<RealtimeMessage> getLatestMessageData() {
+    return _realtime.subscribe([
+      'databases.${AppWriteConstants.databaseId}.collections.${AppWriteConstants.messagesCollectionId}.documents'
+    ]).stream;
   }
 }

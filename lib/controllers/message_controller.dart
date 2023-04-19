@@ -20,6 +20,11 @@ final getMessageProvider = FutureProvider.family((ref, String receiver) async {
   return messagecontroller.getMessages(receiver);
 });
 
+final getLatestMessageDataProvider = StreamProvider((ref) {
+  final userApi = ref.watch(messageApiProvider);
+  return userApi.getLatestMessageData();
+});
+
 class MessageController extends StateNotifier<bool> {
   final Ref _ref;
   final MessageApi _mssgApi;
