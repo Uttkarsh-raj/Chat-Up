@@ -185,7 +185,7 @@ class _ChatsPageState extends ConsumerState<ChatsPage> {
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 if (messageController.text.isNotEmpty) {
-                                  if (currentUser != null) {
+                                  if (currentUser.uid != null) {
                                     ref
                                         .read(userProfileControllerProvider
                                             .notifier)

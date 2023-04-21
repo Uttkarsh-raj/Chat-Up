@@ -1,11 +1,15 @@
 import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/explore_controller.dart';
+import 'package:chatit/controllers/user_profile_controller.dart';
+import 'package:chatit/models/user_model.dart';
 import 'package:chatit/screens/widgets/custom_textfield.dart';
 import 'package:chatit/screens/widgets/search_tile.dart';
 import 'package:chatit/view/user_profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../../constants/appwrite_constants.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -48,6 +52,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    late UserModel copyofUser;
     final currentUser = ref.watch(currentUserDetailsProvider).value;
     return Scaffold(
       body: (currentUser == null)
@@ -79,9 +84,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                                       NetworkImage(currentUser.profilePic),
                                   radius: 30,
                                 ),
-                                if (currentUser.bannerPic == null ||
-                                    currentUser.profilePic == null ||
-                                    currentUser.bio == null)
+                                if (currentUser.bannerPic == '' ||
+                                    currentUser.profilePic == '' ||
+                                    currentUser.bio == '')
                                   const CircleAvatar(
                                     radius: 6,
                                     backgroundColor: Colors.white,
@@ -147,24 +152,53 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 child: CircularProgressIndicator(),
                               ),
                             )
-                        : (currentUser.contacts.isNotEmpty)
-                            ? Expanded(
+                        : ref.watch(getlatestUserProfileDataProvider).when(
+                            data: (data) {
+                              if (data.events.contains(
+                                  'databases.*.collections.${AppWriteConstants.userCollectionId}.documents.${currentUser.uid}.update')) {
+                                copyofUser = UserModel.fromMap(data.payload);
+                              }
+                              return Expanded(
                                 child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: currentUser.contacts.length,
                                   itemBuilder: (context, index) {
-                                    final user = ref
-                                        .watch(userDetailsProvider(
-                                            currentUser.contacts[index]))
-                                        .value;
-                                    if (user != null) {
-                                      return SearchTile(receiver: user);
-                                    }
+                                    return ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: copyofUser.contacts.length,
+                                      itemBuilder: (context, index) {
+                                        final user = ref
+                                            .watch(userDetailsProvider(
+                                                currentUser.contacts[index]))
+                                            .value;
+                                        if (user != null) {
+                                          return SearchTile(receiver: user);
+                                        }
+                                      },
+                                    );
                                   },
                                 ),
-                              )
-                            : const SizedBox(),
+                              );
+                            },
+                            error: (error, st) => Scaffold(
+                                body: Center(child: Text(error.toString()))),
+                            loading: () => (currentUser.contacts.isNotEmpty)
+                                ? Expanded(
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: currentUser.contacts.length,
+                                      itemBuilder: (context, index) {
+                                        final user = ref
+                                            .watch(userDetailsProvider(
+                                                currentUser.contacts[index]))
+                                            .value;
+                                        if (user != null) {
+                                          return SearchTile(receiver: user);
+                                        }
+                                      },
+                                    ),
+                                  )
+                                : const SizedBox()),
                   ],
                 ),
               ),

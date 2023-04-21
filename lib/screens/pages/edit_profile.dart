@@ -156,18 +156,16 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                         ),
                         Center(
                           child: GestureDetector(
-                            onTap: () {
-                              ref
-                                  .watch(userProfileControllerProvider.notifier)
-                                  .updateUserProfile(
-                                    userModel: widget.user!.copyWith(
-                                        bio: bioController.text,
-                                        name: nameController.text),
-                                    context: context,
-                                    bannerFile: bannerFile,
-                                    profileFile: profileFile,
-                                  );
-                            },
+                            onTap: () => ref
+                                .watch(userProfileControllerProvider.notifier)
+                                .updateUserProfile(
+                                  userModel: widget.user!.copyWith(
+                                      bio: bioController.text,
+                                      name: nameController.text),
+                                  context: context,
+                                  bannerFile: bannerFile,
+                                  profileFile: profileFile,
+                                ),
                             child: const CustomButtonGreen(
                               title: 'Save',
                             ),

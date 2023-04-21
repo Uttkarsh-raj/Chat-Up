@@ -64,10 +64,10 @@ class UserProfileController extends StateNotifier<bool> {
   }) async {
     if (currentUser != null) {
       if (!currentUser.contacts.contains(user.uid)) {
-        // user.contacts.add(currentUser.uid);
-        // currentUser.contacts.add(user.uid);
-        currentUser.contacts.insert(user.contacts.length, user.uid);
-        user.contacts.insert(currentUser.contacts.length, user.uid);
+        user.contacts.add(currentUser.uid);
+        currentUser.contacts.add(user.uid);
+        // currentUser.contacts.insert(user.contacts.length, user.uid);
+        // user.contacts.insert(currentUser.contacts.length, user.uid);
       }
 
       final res = await _userApi.addToContacts(currentUser);

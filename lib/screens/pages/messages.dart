@@ -1,3 +1,4 @@
+import 'package:chatit/controllers/auth_controller.dart';
 import 'package:chatit/controllers/message_controller.dart';
 import 'package:chatit/models/message_model.dart';
 import 'package:chatit/screens/widgets/message_widget.dart';
@@ -17,6 +18,7 @@ class Messages extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var sentMessagesProvider = getMessageProvider(receiver.uid);
     var receivedMessagesProvider = getMessageProvider(sender.uid);
+    final currentUser = ref.watch(currentUserDetailsProvider).value;
 
     var sortedMessageProvider = FutureProvider((ref) {
       final combinedMessages = [
@@ -24,7 +26,8 @@ class Messages extends ConsumerWidget {
               data: (data) {
                 List<MessageModel> l = [];
                 for (MessageModel i in data) {
-                  if (i.receiverId == receiver.uid) {
+                  if (i.receiverId == receiver.uid &&
+                      i.senderId == currentUser?.uid) {
                     l.add(i);
                   }
                 }
@@ -36,7 +39,8 @@ class Messages extends ConsumerWidget {
               data: (data) {
                 List<MessageModel> m = [];
                 for (MessageModel i in data) {
-                  if (i.senderId == receiver.uid) {
+                  if (i.senderId == receiver.uid &&
+                      i.receiverId == currentUser?.uid) {
                     m.add(i);
                   }
                 }
@@ -64,7 +68,8 @@ class Messages extends ConsumerWidget {
                         data: (data) {
                           List<MessageModel> l = [];
                           for (MessageModel i in data) {
-                            if (i.receiverId == receiver.uid) {
+                            if (i.receiverId == receiver.uid &&
+                                i.senderId == currentUser?.uid) {
                               l.add(i);
                             }
                           }
@@ -81,7 +86,8 @@ class Messages extends ConsumerWidget {
                         data: (data) {
                           List<MessageModel> m = [];
                           for (MessageModel i in data) {
-                            if (i.senderId == receiver.uid) {
+                            if (i.senderId == receiver.uid &&
+                                i.receiverId == currentUser?.uid) {
                               m.add(i);
                             }
                           }
