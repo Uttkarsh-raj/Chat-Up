@@ -17,6 +17,8 @@ abstract class IAuthApi {
   });
 
   Future<model.Account?> currentUserAccount();
+
+  Future<Either<String, void>> logout();
 }
 
 final authApiProvider = Provider((ref) {
@@ -63,6 +65,18 @@ class AuthApi implements IAuthApi {
       final session =
           await _account.createEmailSession(email: email, password: password);
       return right(session);
+    } on AppwriteException catch (e) {
+      return left(e.message ?? '');
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, void>> logout() async {
+    try {
+      await _account.deleteSession(sessionId: 'current');
+      return right(null);
     } on AppwriteException catch (e) {
       return left(e.message ?? '');
     } catch (e) {

@@ -100,9 +100,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const Icon(
-                            Icons.logout_outlined,
-                            size: 30,
+                          GestureDetector(
+                            onTap: () => showLogoutAlertDialog(context),
+                            child: const Icon(
+                              Icons.logout_outlined,
+                              size: 30,
+                            ),
                           ),
                         ],
                       ),
@@ -166,6 +169,39 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
               ),
             ),
+    );
+  }
+
+  showLogoutAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget logoutButton = TextButton(
+      child: const Text("Logout"),
+      onPressed: () =>
+          ref.read(authControllerProvider.notifier).logout(context),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Logout"),
+      content: const Text("Logout this user?"),
+      actions: [
+        cancelButton,
+        logoutButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

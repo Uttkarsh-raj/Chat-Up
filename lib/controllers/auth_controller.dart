@@ -2,6 +2,7 @@ import 'package:appwrite/models.dart' as model;
 import 'package:chatit/apis/auth_api.dart';
 import 'package:chatit/apis/user_api.dart';
 import 'package:chatit/models/user_model.dart';
+import 'package:chatit/screens/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
@@ -112,5 +113,16 @@ class AuthController extends StateNotifier<bool> {
     final document = await _userAPi.getUserData(uid);
     final updatedUser = UserModel.fromMap(document.data);
     return updatedUser;
+  }
+
+  void logout(BuildContext context) async {
+    final res = await _authApi.logout();
+    res.fold(
+        (l) => null,
+        (r) => Navigator.pushAndRemoveUntil(
+            context,
+            PageTransition(
+                child: const LoginPage(), type: PageTransitionType.fade),
+            (route) => false));
   }
 }
