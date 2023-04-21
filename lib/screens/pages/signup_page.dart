@@ -99,19 +99,19 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     const SizedBox(
                       height: 15,
                     ),
-                    const Text(
-                      'or sign up with',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomButtonGrey(
-                      title: 'Google',
-                      icon: Assets.google,
-                    ),
+                    // const Text(
+                    //   'or sign up with',
+                    //   style: TextStyle(
+                    //     fontSize: 17,
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
+                    // CustomButtonGrey(
+                    //   title: 'Google',
+                    //   icon: Assets.google,
+                    // ),
                     const SizedBox(
                       height: 13,
                     ),

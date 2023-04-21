@@ -110,19 +110,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(
                       height: 15,
                     ),
-                    const Text(
-                      'or continue with',
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomButtonGrey(
-                      title: 'Google',
-                      icon: Assets.google,
-                    ),
+                    // const Text(
+                    //   'or continue with',
+                    //   style: TextStyle(
+                    //     fontSize: 17,
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
+                    // CustomButtonGrey(
+                    //   title: 'Google',
+                    //   icon: Assets.google,
+                    // ),
                     const SizedBox(
                       height: 13,
                     ),

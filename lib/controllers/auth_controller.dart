@@ -97,14 +97,10 @@ class AuthController extends StateNotifier<bool> {
       (l) => showSnackbar(context, l),
       (r) {
         Navigator.push(
-          context,
-          PageTransition(
-            child: const HomePage(),
-            type: PageTransitionType.fade,
-            duration: const Duration(milliseconds: 100),
-            alignment: Alignment.center,
-          ),
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ));
       },
     );
   }
